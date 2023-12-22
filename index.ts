@@ -27,21 +27,23 @@ setFetcher(async (...params: Parameters<typeof fetch>) => {
 
 const db = new Database("ship-tags.db");
 db.exec(`CREATE TABLE IF NOT EXISTS tags(
+    id INTEGER PRIMARY KEY,
     name string,
     request_id string,
     ao3_id string,
     category string,
     canonical string,
     common string,
-    canonical_name string);`);
+    canonical_name string,
+    parent_tags string);`);
 
 const queryResult = db
   .prepare("select MAX(request_id) as lastId from tags;")
   .get();
 
 // @ts-ignore
-const startFrom = queryResult.lastId;
-for (let i = startFrom + 1; i <= startFrom + 100; i++) {
+const startFrom = queryResult.lastId ?? 0;
+for (let i = startFrom + 25; i <= startFrom + 100; i++) {
   try {
     const tagName = await getTagNameById({ tagId: i.toString() });
     console.log(tagName);
@@ -57,8 +59,9 @@ for (let i = startFrom + 1; i <= startFrom + 100; i++) {
                 category,
                 canonical,
                 common,
-                canonical_name
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)`
+                canonical_name,
+                parent_tags
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
         ).run(
           tag.name,
           i,
@@ -66,7 +69,8 @@ for (let i = startFrom + 1; i <= startFrom + 100; i++) {
           tag.category,
           String(tag.canonical),
           String(tag.common),
-          tag.canonicalName
+          tag.canonicalName,
+          JSON.stringify(tag.parentTags)
         );
       }
     }

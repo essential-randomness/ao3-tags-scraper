@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@bobaboard/ao3.js": "^0.15.0",
+    "@bobaboard/ao3.js": "^0.16.0",
     "better-sqlite3": "^9.2.2",
     "tsx": "^4.7.0"
   },
