@@ -1,0 +1,20 @@
+{
+  "name": "ao3-scraping",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@bobaboard/ao3.js": "^0.15.0",
+    "better-sqlite3": "^9.2.2",
+    "tsx": "^4.7.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.8"
+  }
+}
