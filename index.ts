@@ -8,16 +8,17 @@ setFetcher(async (...params: Parameters<typeof fetch>) => {
   let response = await fetch(...params);
   console.log(`Response status: ${response.status}`);
   while (response.status == 429) {
-    const waitSeconds = response.headers.get("retry-after");
+    let waitSeconds = parseInt(response.headers.get("retry-after") || "");
     console.log(
       `Asked to wait ${waitSeconds} seconds to send request to ${params[0]}`
     );
     console.log(`Waiting ${waitSeconds} seconds`);
     if (!waitSeconds) {
-      throw new Error("A wait request was made without indication of length.");
+      console.error("A wait request was made without indication of length.");
+      waitSeconds = 2;
     }
     await new Promise((res) => {
-      setTimeout(() => res(null), parseInt(waitSeconds) * 1000);
+      setTimeout(() => res(null), waitSeconds * 1000);
     });
     console.log(`Continuing with request to ${params[0]}`);
     response = await fetch(...params);
