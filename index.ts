@@ -44,7 +44,7 @@ const queryResult = db
 
 // @ts-ignore
 const startFrom = queryResult.lastId ?? 0;
-for (let i = startFrom + 25; i <= startFrom + 100; i++) {
+for (let i = 0; i <= 100010000; i++) {
   try {
     const tagName = await getTagNameById({ tagId: i.toString() });
     console.log(tagName);
